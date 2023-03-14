@@ -17,4 +17,16 @@ echo "------installing multer------"
 echo "------installing multer------"
 npm install multer
 
+# Install OpenAI.
+echo "------install axios------"
+echo "------install axios------"
+echo "------install axios------"
+npm install axios
+
+# Install OpenAI.
+echo "------openai api------"
+echo "------openai api------"
+echo "------openai api------"
+npm install openai
+
 
