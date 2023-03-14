@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Loading from "./Loading";
 
 const Home = () => {
+    const navigate = useNavigate();
     const [fullName, setFullName] = useState("Taku");
     const [currentPosition, setCurrentPosition] = useState("");
     const [currentLength, setCurrentLength] = useState(1);
@@ -21,6 +23,7 @@ const Home = () => {
         formData.append("currentLength", currentLength);
         formData.append("currentTechnologies", currentTechnologies);
         formData.append("workHistory", JSON.stringify(companyInfo));
+
         axios
             .post("https://4000-chikangatak-resumeforge-ebnaa55ynsm.ws-eu90.gitpod.io/resume/create", formData, {})
             .then((res) => {

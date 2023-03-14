@@ -16,3 +16,5 @@ const Resume = ({ result }) => {
         </>
     );
 };
+
+export default Resume;

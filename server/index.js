@@ -2,8 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
-const doppler = require('./secrets')
 const { Configuration, OpenAIApi } = require("openai");
+const dotenv = require('dotenv');
+dotenv.config()
 
 // creates a new instance of the Express application.
 const app = express();
@@ -33,32 +34,26 @@ const upload = multer({
     limits: { fileSize: 1024 * 1024 * 5 },
 });
 
-// Doppler and OpenAI
-(async (text) => {
-    const secrets = await doppler.getSecrets()
-    const apikey = secrets.apikey
-    const configuration = new Configuration({
-      apiKey: apikey
-    })
-    // Use the configuration object to call OpenAI APIs
-    // For example: const completions = await openai.complete({ prompt: "Hello", max_tokens: 5 })
-    const openai = new OpenAIApi(configuration)
+// OpenAI intergration
+const configuration = new Configuration({
+    apiKey: process.env.API_KEY,
+});
 
-    const GPTFunction = async (text) => {
-        const response = await openai.createCompletion({
-            model: "text-davinci-003",
-            prompt: text,
-            temperature: 0.6,
-            max_tokens: 5,
-            top_p: 1,
-            frequency_penalty: 1,
-            presence_penalty: 1,
-        });
-        console.log(response.data.choices[0].text);
-        return response.data.choices[0].text;
-    };
+const openai = new OpenAIApi(configuration);
 
-})()
+const GPTFunction = async (text) => {
+    const response = await openai.createCompletion({
+        model: "text-davinci-003",
+        prompt: text,
+        temperature: 0.6,
+        max_tokens: 5,
+        top_p: 1,
+        frequency_penalty: 1,
+        presence_penalty: 1,
+    });
+    console.log(response.data.choices[0].text);
+    return response.data.choices[0].text;
+};
 
 // Routes
 app.get("/api", (req, res) => {

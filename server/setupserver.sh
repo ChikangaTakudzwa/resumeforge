@@ -29,4 +29,9 @@ echo "------openai api------"
 echo "------openai api------"
 npm install openai
 
+# Install OpenAI.
+echo "------dotenv------"
+echo "------dotenv------"
+echo "------dotenv------"
+npm install dotenv --save
 
