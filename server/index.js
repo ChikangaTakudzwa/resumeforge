@@ -19,10 +19,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // adds middleware to enable CORS for all routes.
-// const corsOptions = {
-//     origin: 'https://example.com'
-//   };
-app.use(cors());
+const corsOptions = {
+    origin: 'https://chikangatakudzwa-cuddly-carnival-q6xgwrx4q5v3x64-3000.preview.app.github.dev'
+  };
+app.use(cors(corsOptions));
 
 // code for image upload with multa
 app.use("/uploads", express.static("uploads"));
