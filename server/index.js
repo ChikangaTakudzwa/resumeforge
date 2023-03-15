@@ -1,20 +1,27 @@
 const express = require("express");
 const cors = require("cors");
 const multer = require("multer");
+const helmet = require("helmet");
 const path = require("path");
 const { Configuration, OpenAIApi } = require("openai");
 const dotenv = require('dotenv');
-dotenv.config()
 
 // creates a new instance of the Express application.
 const app = express();
 const PORT = 4000;
 
+app.use(helmet())
+dotenv.config()
+
 // adds middleware to parse incoming request bodies that are encoded in url-encoded format.
 app.use(express.urlencoded({ extended: true }));
 // adds middleware to parse incoming request bodies that are in JSON format.
 app.use(express.json());
+
 // adds middleware to enable CORS for all routes.
+// const corsOptions = {
+//     origin: 'https://example.com'
+//   };
 app.use(cors());
 
 // code for image upload with multa
@@ -66,7 +73,7 @@ app.get("/api", (req, res) => {
 let database = [];
 
 // post form data to the server, img uploaded using upload.single()
-app.post("/resume/create", upload.single("headshotImage"), async (req, res) => {
+app.post("https://4000-chikangatak-resumeforge-ebnaa55ynsm.ws-eu90.gitpod.io/resume/create", upload.single("headshotImage"), async (req, res) => {
     const {
         fullName,
         currentPosition,
@@ -81,7 +88,7 @@ app.post("/resume/create", upload.single("headshotImage"), async (req, res) => {
     const newEntry = {
         id: generateID(),
         fullName,
-        image_url: `http://10.0.5.2:4000/uploads/${req.file.filename}`,
+        image_url: `https://4000-chikangatak-resumeforge-ebnaa55ynsm.ws-eu90.gitpod.io/uploads/${req.file.filename}`,
         currentPosition,
         currentLength,
         currentTechnologies,

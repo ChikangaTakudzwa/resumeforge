@@ -26,10 +26,11 @@ const Home = ({ setResult }) => {
         formData.append("workHistory", JSON.stringify(companyInfo));
 
         axios
-            .post("http://10.0.5.2:4000/resume/create", formData, {})
+            .post("https://4000-chikangatak-resumeforge-ebnaa55ynsm.ws-eu90.gitpod.io/resume/create", formData, {})
             .then((res) => {
                 if (res.data.message) {
                     // updates the result object
+                    console.log(res.data.message);
                     setResult(res.data.data);
                     navigate("/resume");
                 }
