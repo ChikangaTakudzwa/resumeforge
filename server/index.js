@@ -20,9 +20,9 @@ app.use(express.json());
 
 // adds middleware to enable CORS for all routes.
 const corsOptions = {
-    origin: 'https://chikangatakudzwa-cuddly-carnival-q6xgwrx4q5v3x64-3000.preview.app.github.dev'
+    origin: 'https://*'
   };
-app.use(cors(corsOptions));
+app.use(cors());
 
 // code for image upload with multa
 app.use("/uploads", express.static("uploads"));

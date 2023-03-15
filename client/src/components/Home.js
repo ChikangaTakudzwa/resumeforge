@@ -30,7 +30,7 @@ const Home = ({ setResult }) => {
         //         'Content-Type': 'multipart/form-data'
         //     }
         // });
-
+        setLoading(true);
         axios
             .post('https://resumeforge.onrender.com/resume/create', formData, {
                 headers: {
@@ -45,8 +45,7 @@ const Home = ({ setResult }) => {
                     navigate("/resume");
                 }
             })
-            .catch((err) => console.error(err));
-        setLoading(true);
+            .catch((err) => console.error(err))
     };
 
     // updates the state with user's input
@@ -66,7 +65,7 @@ const Home = ({ setResult }) => {
     list[index][name] = value;
     setCompanyInfo(list);
     };
-
+    
     // Renders the Loading component when you submit the form
     if (loading) {
         return <Loading />;
