@@ -77,7 +77,7 @@ app.get('/ping', (req, res) => {
 let database = [];
 
 // post form data to the server, img uploaded using upload.single()
-app.post("https://4000-chikangatak-resumeforge-ebnaa55ynsm.ws-eu90.gitpod.io/resume/create", upload.single("headshotImage"), async (req, res) => {
+app.post('/resume/create', upload.single("headshotImage"), async (req, res) => {
     const {
         fullName,
         currentPosition,
@@ -92,7 +92,7 @@ app.post("https://4000-chikangatak-resumeforge-ebnaa55ynsm.ws-eu90.gitpod.io/res
     const newEntry = {
         id: generateID(),
         fullName,
-        image_url: `https://4000-chikangatak-resumeforge-ebnaa55ynsm.ws-eu90.gitpod.io/uploads/${req.file.filename}`,
+        image_url: `/uploads/${req.file.filename}`,
         currentPosition,
         currentLength,
         currentTechnologies,

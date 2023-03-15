@@ -26,7 +26,7 @@ const Home = ({ setResult }) => {
         formData.append("workHistory", JSON.stringify(companyInfo));
 
         axios
-            .post("https://4000-chikangatak-resumeforge-ebnaa55ynsm.ws-eu90.gitpod.io/resume/create", formData, {})
+            .post('https://resumeforge.onrender.com/resume/create', formData, {})
             .then((res) => {
                 if (res.data.message) {
                     // updates the result object
@@ -57,7 +57,7 @@ const Home = ({ setResult }) => {
     setCompanyInfo(list);
     };
 
-    // Renders the Loading component you submit the form
+    // Renders the Loading component when you submit the form
     if (loading) {
         return <Loading />;
     }
