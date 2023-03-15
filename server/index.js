@@ -8,7 +8,7 @@ const dotenv = require('dotenv');
 
 // creates a new instance of the Express application.
 const app = express();
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 
 app.use(helmet())
 dotenv.config()
@@ -63,7 +63,7 @@ const GPTFunction = async (text) => {
 };
 
 // Routes
-app.get("/api", (req, res) => {
+app.get('/', (req, res) => {
     res.json({
         message: "Hello world",
     });
@@ -138,6 +138,11 @@ app.post("https://4000-chikangatak-resumeforge-ebnaa55ynsm.ws-eu90.gitpod.io/res
     });
 });
 
-app.listen(PORT, () => {
-    console.log(`Server listening on ${PORT}`);
-});
+app.listen(PORT, (err, res) => {
+    if (err) {
+        console.log(err)
+        return res.status(500).send(err.message)
+    } else {
+        console.log('[INFO] Server Running on port:', PORT)
+    }
+})
