@@ -69,6 +69,10 @@ app.get("/api", (req, res) => {
     });
 });
 
+app.get('/ping', (req, res) => {
+    res.send('pong 🏓')
+})
+
 // array to store data from chatgpt
 let database = [];
 
