@@ -13,3 +13,7 @@ echo "------installing axios, react-router-dom------"
 echo "------installing axios, react-router-dom------"
 npm install axios react-router-dom
 
+echo "------adding react-to-print------"
+echo "------adding react-to-print------"
+echo "------adding react-to-print------"
+npm install react-to-print
