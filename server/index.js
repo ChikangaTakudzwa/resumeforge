@@ -1,12 +1,11 @@
-const express = require('express');
-const cors = require("cors");
+const { Configuration, OpenAIApi } = require("openai");
+const express = require("express");
 const multer = require("multer");
 const helmet = require("helmet");
-const fs = require('fs');
-const path = require("path");
-const { v4: uuidv4 } = require('uuid');
-const { Configuration, OpenAIApi } = require("openai");
 const dotenv = require('dotenv');
+const path = require("path");
+const cors = require("cors");
+const fs = require("fs");
 
 // creates a new instance of the Express application.
 const app = express();
