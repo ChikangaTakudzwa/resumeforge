@@ -47,14 +47,8 @@ const Home = ({ setResult }) => {
         // });
 
         setLoading(true);
-        // axios
-        //     .post('https://resumeforge.onrender.com/resume/create', formData, {
-        //         headers: {
-        //             'Content-Type': 'multipart/form-data'
-        //         }
-        //     })
-            
-    // };
+                  
+    };
 
     // updates the state with user's input
     const handleAddCompany = () =>
