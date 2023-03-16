@@ -94,7 +94,7 @@ app.get('/ping', (req, res) => {
 let database = [];
 
 // post form data to the server, img uploaded using upload.single()
-app.post('/resume/create', upload.single("photo"), async (req, res) => {
+app.post('/resume/create', upload.single('photo'), async (req, res) => {
     const {
         fullName,
         currentPosition,
@@ -109,7 +109,7 @@ app.post('/resume/create', upload.single("photo"), async (req, res) => {
     const newEntry = {
         id: uuidv4(),
         fullName,
-        image_url: `https://resumeforge.onrender.com/uploads/${req.photo.filename}`,
+        image_url: `https://resumeforge.onrender.com/uploads/${req.file.filename}`,
         currentPosition,
         currentLength,
         currentTechnologies,
