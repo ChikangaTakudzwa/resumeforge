@@ -19,13 +19,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // adds middleware to enable CORS for all routes.
-const corsOptions = {
-    origin: 'https://*'
-  };
+// const corsOptions = {
+//     origin: 'https://*'
+//   };
 app.use(cors());
 
 // code for image upload with multa
 app.use("/uploads", express.static("uploads"));
+const uploadspath = path.join(__dirname, "uploads");
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -77,7 +78,7 @@ app.get('/ping', (req, res) => {
 let database = [];
 
 // post form data to the server, img uploaded using upload.single()
-app.post('https://resumeforge.onrender.com/resume/create', upload.single("photo"), async (req, res) => {
+app.post('/resume/create', upload.single("photo"), async (req, res) => {
     const {
         fullName,
         currentPosition,
@@ -92,7 +93,7 @@ app.post('https://resumeforge.onrender.com/resume/create', upload.single("photo"
     const newEntry = {
         id: generateID(),
         fullName,
-        image_url: `https://resumeforge.onrender.com/uploads/${req.file.filename}`,
+        image_url: `${uploadspath}/${req.file.filename}`,
         currentPosition,
         currentLength,
         currentTechnologies,
