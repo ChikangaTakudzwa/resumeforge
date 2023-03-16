@@ -25,12 +25,27 @@ const Home = ({ setResult }) => {
         formData.append("currentTechnologies", currentTechnologies);
         formData.append("workHistory", JSON.stringify(companyInfo));
 
-        axios.post('https://resumeforge.onrender.com/resume/create', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            },
-        });
-        console.log(formData);
+        axios.post('https://resumeforge.onrender.com/resume/create', formData)
+            .then(response => {
+              // Handle response data here
+              if (response.data.message) {
+                // updates the result object
+                console.log(response.data.message);
+                setResult(response.data.data);
+                navigate("/resume");
+            }
+            })
+            .catch(error => {
+              console.log(error.message);
+            });
+
+
+        // axios.post('https://resumeforge.onrender.com/resume/create', formData, {
+        //     headers: {
+        //         'Content-Type': 'multipart/form-data'
+        //     },
+        // });
+
         setLoading(true);
         // axios
         //     .post('https://resumeforge.onrender.com/resume/create', formData, {
@@ -38,16 +53,8 @@ const Home = ({ setResult }) => {
         //             'Content-Type': 'multipart/form-data'
         //         }
         //     })
-        //     .then((res) => {
-        //         if (res.data.message) {
-        //             // updates the result object
-        //             console.log(res.data.message);
-        //             setResult(res.data.data);
-        //             navigate("/resume");
-        //         }
-        //     })
-        //     .catch((err) => console.error(err))
-    };
+            
+    // };
 
     // updates the state with user's input
     const handleAddCompany = () =>
