@@ -86,7 +86,7 @@ app.get('/ping', (req, res) => {
 
 // post form data to the server, img uploaded using upload.single()
 app.post('/resume/create', upload.single('photo'), async (req, res) => {
-    console.log(req.file.filename);
+    
     try {
         const {
             fullName,
