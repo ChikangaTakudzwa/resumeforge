@@ -73,65 +73,79 @@ app.get('/ping', (req, res) => {
 
 // post form data to the server, img uploaded using upload.single()
 app.post('/resume/create', upload.single('photo'), async (req, res) => {
-    const filename = Date.now() + path.extname(req.file.originalname);
-    const {
-        fullName,
-        currentPosition,
-        currentLength,
-        currentTechnologies,
-        workHistory, //JSON format
-    } = req.body;
-
-    const workArray = JSON.parse(workHistory); //an array
-
-    // group the values into an object
-    const newEntry = {
-        id: generateID(),
-        fullName,
-        image_url: `https://resumeforge.onrender.com/uploads/${req.body.file.filename}`,
-        currentPosition,
-        currentLength,
-        currentTechnologies,
-        workHistory: workArray,
-    };
-
-    // loops through the items in the workArray and converts them to a string
-    const remainderText = () => {
-        let stringText = "";
-        for (let i = 0; i < workArray.length; i++) {
-            stringText += `${workArray[i].name} as a ${workArray[i].position}.`;
-        }
-        return stringText;
-    };
-
-    // The job description prompt
-    const prompt1 = `I am writing a resume, my details are \n name: ${fullName} \n role: ${currentPosition} (${currentLength} years). \n I write in the technolegies: ${currentTechnologies}. Can you write a 100 words description for the top of the resume(first person writing)?`;
-
-    // The job responsibilities prompt
-    const prompt2 = `I am writing a resume, my details are \n name: ${fullName} \n role: ${currentPosition} (${currentLength} years). \n I write in the technolegies: ${currentTechnologies}. Can you write 10 points for a resume on what I am good at?`;
-
-    // The job achievements prompt
-    const prompt3 = `I am writing a resume, my details are \n name: ${fullName} \n role: ${currentPosition} (${currentLength} years). \n During my years I worked at ${
-        workArray.length
-    } companies. ${remainderText()} \n Can you write me 50 words for each company seperated in numbers of my succession in the company (in first person)?`;
-
-    // generate a GPT-3 result
-    const objective = await GPTFunction(prompt1);
-    const keypoints = await GPTFunction(prompt2);
-    const jobResponsibilities = await GPTFunction(prompt3);
-    // put them into an object
-    const chatgptData = { objective, keypoints, jobResponsibilities };
-    // log the result
-    console.log(chatgptData);
-
-    // return the AI-generated result and the information the users entered
-    const data = { ...newEntry, ...chatgptData };
-    database.push(data);
-
-    res.json({
-        message: "Request successful!",
-        data,
-    });
+    try {
+        const {
+            fullName,
+            currentPosition,
+            currentLength,
+            currentTechnologies,
+            workHistory, //JSON format
+        } = req.body;
+    
+        const workArray = JSON.parse(workHistory); //an array
+    
+        // group the values into an object
+        const newEntry = {
+            id: generateID(),
+            fullName,
+            image_url: `https://resumeforge.onrender.com/uploads/${req.body.file.filename}`,
+            currentPosition,
+            currentLength,
+            currentTechnologies,
+            workHistory: workArray,
+        };
+    
+        // loops through the items in the workArray and converts them to a string
+        const remainderText = () => {
+            let stringText = "";
+            for (let i = 0; i < workArray.length; i++) {
+                stringText += `${workArray[i].name} as a ${workArray[i].position}.`;
+            }
+            return stringText;
+        };
+    
+        // The job description prompt
+        const prompt1 = `I am writing a resume, my details are \n name: ${fullName} \n role: ${currentPosition} (${currentLength} years). \n I write in the technolegies: ${currentTechnologies}. Can you write a 100 words description for the top of the resume(first person writing)?`;
+    
+        // The job responsibilities prompt
+        const prompt2 = `I am writing a resume, my details are \n name: ${fullName} \n role: ${currentPosition} (${currentLength} years). \n I write in the technolegies: ${currentTechnologies}. Can you write 10 points for a resume on what I am good at?`;
+    
+        // The job achievements prompt
+        const prompt3 = `I am writing a resume, my details are \n name: ${fullName} \n role: ${currentPosition} (${currentLength} years). \n During my years I worked at ${
+            workArray.length
+        } companies. ${remainderText()} \n Can you write me 50 words for each company seperated in numbers of my succession in the company (in first person)?`;
+    
+        // generate a GPT-3 result
+        const objective = await GPTFunction(prompt1).catch((err) => {
+            console.error(`Error calling GPTFunction with prompt 1 : ${err}`);
+            throw err;
+        });
+        const keypoints = await GPTFunction(prompt2).catch((err) => {
+            console.error(`Error calling GPTFunction with prompt 2 : ${err}`);
+            throw err;
+        });
+        const jobResponsibilities = await GPTFunction(prompt3).catch((err) => {
+            console.error(`Error calling GPTFunction with prompt 3 : ${err}`);
+            throw err;
+        });
+        // put them into an object
+        const chatgptData = { objective, keypoints, jobResponsibilities };
+        // log the result
+        console.log(chatgptData);
+    
+        // return the AI-generated result and the information the users entered
+        const data = { ...newEntry, ...chatgptData };
+        database.push(data);
+    
+        res.json({
+            message: "Request successful!",
+            data,
+        });
+    } catch (err) {
+        console.error(`Error handling request: ${err}`);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+    
 });
 
 app.listen(PORT, (err, res) => {
