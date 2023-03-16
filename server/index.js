@@ -10,47 +10,43 @@ const dotenv = require('dotenv');
 
 // creates a new instance of the Express application.
 const app = express();
-const PORT = process.env.PORT || 4000;
 
 app.use(helmet())
 dotenv.config()
+const PORT = process.env.PORT || 4000;
 
-// adds middleware to parse incoming request bodies that are encoded in url-encoded format.
-app.use(express.urlencoded({ extended: true }));
+// adds middleware to parse incoming request bodies that are encoded in url-encoded format
 // adds middleware to parse incoming request bodies that are in JSON format.
-app.use(express.json());
-
-// adds middleware to enable CORS for all routes.
-// const corsOptions = {
-//     origin: 'https://*'
-//   };
-app.use(cors());
-
-// Make direcory in the server root
-const filedir = "uploads";
-
-// Get the path to the current server project root directory
-const projectroot = process.cwd();
-
-// Create the new directory
-fs.mkdir(`${projectroot}/${filedir}`, (err) => {
-  if (err) {
-    console.log(err.message);
-  } else {
-    console.log(`Successfully created directory ${filedir} in ${projectroot}`);
-  }
-});
-
+app.use(express.urlencoded({ extended: true }));
 // code for image upload with multa
 app.use("/uploads", express.static("uploads"));
+app.use(express.json());
+app.use(cors());
+
+const generateID = () => Math.random().toString(36).substring(2, 10);
+
+// Make direcory in the server root
+// const filedir = "uploads";
+
+// // Get the path to the current server project root directory
+// const projectroot = process.cwd();
+
+// // Create the new directory
+// fs.mkdir(`${projectroot}/${filedir}`, (err) => {
+//   if (err) {
+//     console.log(err.message);
+//   } else {
+//     console.log(`Successfully created directory ${filedir} in ${projectroot}`);
+//   }
+// });
 
 const storage = multer.diskStorage({
-    destination: (req, photo, cb) => {
-        cb(null, "uploads");
-    },
-    filename: (req, photo, cb) => {
-        cb(null, Date.now() + path.extname(photo.originalname));
-    },
+	destination: (req, photo, cb) => {
+		cb(null, "uploads");
+	},
+	filename: (req, photo, cb) => {
+		cb(null, Date.now() + path.extname(photo.originalname));
+	},
 });
 
 const upload = multer({
@@ -65,18 +61,19 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
+const database = [];
+
 const GPTFunction = async (text) => {
-    const response = await openai.createCompletion({
-        model: "text-davinci-003",
-        prompt: text,
-        temperature: 0.6,
-        max_tokens: 50,
-        top_p: 1,
-        frequency_penalty: 1,
-        presence_penalty: 1,
-    });
-    console.log(response.data.choices[0].text);
-    return response.data.choices[0].text;
+	const response = await openai.createCompletion({
+		model: "text-davinci-003",
+		prompt: text,
+		temperature: 0.6,
+		max_tokens: 50,
+		top_p: 1,
+		frequency_penalty: 1,
+		presence_penalty: 1,
+	});
+	return response.data.choices[0].text;
 };
 
 // Routes
@@ -89,9 +86,6 @@ app.get('/', (req, res) => {
 app.get('/ping', (req, res) => {
     res.send('pong 🏓')
 })
-
-// array to store data from chatgpt
-let database = [];
 
 // post form data to the server, img uploaded using upload.single()
 app.post('/resume/create', upload.single('photo'), async (req, res) => {
@@ -107,7 +101,7 @@ app.post('/resume/create', upload.single('photo'), async (req, res) => {
 
     // group the values into an object
     const newEntry = {
-        id: uuidv4(),
+        id: generateID(),
         fullName,
         image_url: `https://resumeforge.onrender.com/uploads/${req.file.filename}`,
         currentPosition,
