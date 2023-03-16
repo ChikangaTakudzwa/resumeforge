@@ -25,7 +25,7 @@ const Home = ({ setResult }) => {
         formData.append("currentTechnologies", currentTechnologies);
         formData.append("workHistory", JSON.stringify(companyInfo));
 
-        axios.post('https://resumeforge.onrender.com/resume/create', formData)
+        axios.post('https://resumeforge.onrender.com/resume/create', formData, {})
             .then(response => {
               // Handle response data here
               if (response.data.message) {
@@ -39,7 +39,6 @@ const Home = ({ setResult }) => {
               console.log(error.message);
             });
 
-
         // axios.post('https://resumeforge.onrender.com/resume/create', formData, {
         //     headers: {
         //         'Content-Type': 'multipart/form-data'
@@ -47,7 +46,6 @@ const Home = ({ setResult }) => {
         // });
 
         setLoading(true);
-                  
     };
 
     // updates the state with user's input
@@ -56,16 +54,16 @@ const Home = ({ setResult }) => {
 
     // removes a selected item from the list
     const handleRemoveCompany = (index) => {
-    const list = [...companyInfo];
-    list.splice(index, 1);
-    setCompanyInfo(list);
+        const list = [...companyInfo];
+        list.splice(index, 1);
+        setCompanyInfo(list);
     };
     // updates an item within the list
     const handleUpdateCompany = (e, index) => {
-    const { name, value } = e.target;
-    const list = [...companyInfo];
-    list[index][name] = value;
-    setCompanyInfo(list);
+        const { name, value } = e.target;
+        const list = [...companyInfo];
+        list[index][name] = value;
+        setCompanyInfo(list);
     };
     
     // Renders the Loading component when you submit the form
