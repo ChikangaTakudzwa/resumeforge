@@ -4,13 +4,14 @@ import ErrorPage from "./ErrorPage";
 
 const Resume = ({ result }) => {
 
+    const componentRef = useRef();
+
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
         documentTitle: `${result.fullName} Resume`,
         onAfterPrint: () => alert("Print Successful!"),
     });
-    const componentRef = useRef();
-
+    
     // function that replaces the new line with a break tag
     const replaceWithBr = (string) => {
         return string.replace(/\n/g, "<br />");

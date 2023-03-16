@@ -3,7 +3,7 @@ echo "------create new react project------"
 echo "------create new react project------"
 echo "------create new react project------"
 cd client 
-npx create-react-app ./ --force
+npx create-react-app ./ --use-npm
 
 # React Router is a JavaScript library that enables us to navigate between pages in a React application.
 # Axios is a promise-based Node.js HTTP client for performing asynchronous requests

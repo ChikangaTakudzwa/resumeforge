@@ -10,7 +10,7 @@ const Home = ({ setResult }) => {
     const [currentPosition, setCurrentPosition] = useState("");
     const [currentLength, setCurrentLength] = useState(1);
     const [currentTechnologies, setCurrentTechnologies] = useState("");
-    const [headshot, setHeadshot] = useState(null);
+    const [photo, setPhoto] = useState(null);
     const [loading, setLoading] = useState(false);
     const [companyInfo, setCompanyInfo] = useState([{ name: "", position: "" }]);
 
@@ -18,24 +18,26 @@ const Home = ({ setResult }) => {
         e.preventDefault();
     
         const formData = new FormData();
-        formData.append("headshotImage", headshot, headshot.name);
+        formData.append("photo", photo, photo.name);
         formData.append("fullName", fullName);
         formData.append("currentPosition", currentPosition);
         formData.append("currentLength", currentLength);
         formData.append("currentTechnologies", currentTechnologies);
         formData.append("workHistory", JSON.stringify(companyInfo));
 
-        axios
-            .post("https://4000-chikangatak-resumeforge-ebnaa55ynsm.ws-eu90.gitpod.io/resume/create", formData, {})
-            .then((res) => {
-                if (res.data.message) {
-                    // updates the result object
-                    console.log(res.data.message);
-                    setResult(res.data.data);
-                    navigate("/resume");
-                }
+        axios.post('https://resumeforge.onrender.com/resume/create', formData, {})
+            .then(response => {
+              // Handle response data here
+              if (response.data.message) {
+                // updates the result object
+                console.log(response.data.message);
+                setResult(response.data.data);
+                navigate("/resume");
+            }
             })
-            .catch((err) => console.error(err));
+            .catch(error => {
+              console.log(error.message);
+            });
         setLoading(true);
     };
 
@@ -45,19 +47,19 @@ const Home = ({ setResult }) => {
 
     // removes a selected item from the list
     const handleRemoveCompany = (index) => {
-    const list = [...companyInfo];
-    list.splice(index, 1);
-    setCompanyInfo(list);
+        const list = [...companyInfo];
+        list.splice(index, 1);
+        setCompanyInfo(list);
     };
     // updates an item within the list
     const handleUpdateCompany = (e, index) => {
-    const { name, value } = e.target;
-    const list = [...companyInfo];
-    list[index][name] = value;
-    setCompanyInfo(list);
+        const { name, value } = e.target;
+        const list = [...companyInfo];
+        list[index][name] = value;
+        setCompanyInfo(list);
     };
-
-    // Renders the Loading component you submit the form
+    
+    // Renders the Loading component when you submit the form
     if (loading) {
         return <Loading />;
     }
@@ -121,7 +123,7 @@ const Home = ({ setResult }) => {
                     required
                     id='photo'
                     accept='image/x-png,image/jpeg'
-                    onChange={(e) => setHeadshot(e.target.files[0])}
+                    onChange={(e) => setPhoto(e.target.files[0])}
                 />
                 <h3>Companies you've worked at</h3>
                 {companyInfo.map((company, index) => (

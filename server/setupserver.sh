@@ -39,3 +39,8 @@ echo "------helmet------"
 echo "------helmet------"
 echo "------helmet------"
 npm i helmet
+
+echo "------GenerateID------"
+echo "------GenerateID------"
+echo "------GenerateID------"
+npm install uuid
