@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require('express');
 const cors = require("cors");
 const multer = require("multer");
 const helmet = require("helmet");
@@ -25,27 +25,12 @@ app.use(cors());
 
 const generateID = () => Math.random().toString(36).substring(2, 10);
 
-// Make direcory in the server root
-// const filedir = "uploads";
-
-// // Get the path to the current server project root directory
-// const projectroot = process.cwd();
-
-// // Create the new directory
-// fs.mkdir(`${projectroot}/${filedir}`, (err) => {
-//   if (err) {
-//     console.log(err.message);
-//   } else {
-//     console.log(`Successfully created directory ${filedir} in ${projectroot}`);
-//   }
-// });
-
 const storage = multer.diskStorage({
 	destination: (req, photo, cb) => {
 		cb(null, "uploads");
 	},
 	filename: (req, photo, cb) => {
-		cb(null, Date.now() + path.extname(photo.originalname));
+		cb(null, path.extname(photo.originalname));
 	},
 });
 
@@ -89,6 +74,7 @@ app.get('/ping', (req, res) => {
 
 // post form data to the server, img uploaded using upload.single()
 app.post('/resume/create', upload.single('photo'), async (req, res) => {
+    const filename = Date.now() + path.extname(req.file.originalname);
     const {
         fullName,
         currentPosition,
@@ -103,7 +89,7 @@ app.post('/resume/create', upload.single('photo'), async (req, res) => {
     const newEntry = {
         id: generateID(),
         fullName,
-        image_url: `https://resumeforge.onrender.com/uploads/${req.file.filename}`,
+        image_url: `https://resumeforge.onrender.com/uploads/${filename}`,
         currentPosition,
         currentLength,
         currentTechnologies,
