@@ -24,18 +24,31 @@ app.use(cors());
 
 const generateID = () => Math.random().toString(36).substring(2, 10);
 
+// Configure multer for file upload
 const storage = multer.diskStorage({
-	destination: (req, photo, cb) => {
-		cb(null, "uploads");
-	},
-	filename: (req, photo, cb) => {
-		cb(null, path.extname(photo.originalname));
-	},
+    destination: function (req, file, cb) {
+        cb(null, './uploads'); // specify the folder to store the uploaded file
+    },
+    filename: function (req, file, cb) {
+        var split_file_name = file.originalname.split(".");
+		var name = split_file_name[0];
+		var extension = split_file_name[1];
+        cb(null, name + '-' + Date.now() + '.' + extension); // set the filename to the original name of the uploaded file
+    }
 });
-
+const fileFilter = function (req, file, cb) {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+        cb(null, true); // accept file
+    } else {
+        cb(new Error('Invalid file type. Only JPEG and PNG are allowed.'), false); // reject file
+    }
+};
 const upload = multer({
     storage: storage,
-    limits: { fileSize: 1024 * 1024 * 5 },
+    limits: {
+        fileSize: 5 * 1024 * 1024 // set the maximum file size (in bytes)
+    },
+    fileFilter: fileFilter
 });
 
 // OpenAI intergration
@@ -73,6 +86,7 @@ app.get('/ping', (req, res) => {
 
 // post form data to the server, img uploaded using upload.single()
 app.post('/resume/create', upload.single('photo'), async (req, res) => {
+    console.log(req.file.filename);
     try {
         const {
             fullName,
@@ -88,7 +102,7 @@ app.post('/resume/create', upload.single('photo'), async (req, res) => {
         const newEntry = {
             id: generateID(),
             fullName,
-            image_url: `https://resumeforge.onrender.com/uploads/${req.body.file.filename}`,
+            image_url: `https://resumeforge.onrender.com/uploads/${req.file.filename}`,
             currentPosition,
             currentLength,
             currentTechnologies,
