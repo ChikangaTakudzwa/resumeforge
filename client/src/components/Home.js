@@ -10,7 +10,7 @@ const Home = ({ setResult }) => {
     const [currentPosition, setCurrentPosition] = useState("");
     const [currentLength, setCurrentLength] = useState(1);
     const [currentTechnologies, setCurrentTechnologies] = useState("");
-    const [headshot, setHeadshot] = useState(null);
+    const [photo, setPhoto] = useState(null);
     const [loading, setLoading] = useState(false);
     const [companyInfo, setCompanyInfo] = useState([{ name: "", position: "" }]);
 
@@ -18,7 +18,7 @@ const Home = ({ setResult }) => {
         e.preventDefault();
     
         const formData = new FormData();
-        formData.append("headshotImage", headshot, headshot.name);
+        formData.append("photo", photo, photo.name);
         formData.append("fullName", fullName);
         formData.append("currentPosition", currentPosition);
         formData.append("currentLength", currentLength);
@@ -130,7 +130,7 @@ const Home = ({ setResult }) => {
                     required
                     id='photo'
                     accept='image/x-png,image/jpeg'
-                    onChange={(e) => setHeadshot(e.target.files[0])}
+                    onChange={(e) => setPhoto(e.target.files[0])}
                 />
                 <h3>Companies you've worked at</h3>
                 {companyInfo.map((company, index) => (

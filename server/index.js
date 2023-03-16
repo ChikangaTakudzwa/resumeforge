@@ -4,6 +4,7 @@ const multer = require("multer");
 const helmet = require("helmet");
 const fs = require('fs');
 const path = require("path");
+const { v4: uuidv4 } = require('uuid');
 const { Configuration, OpenAIApi } = require("openai");
 const dotenv = require('dotenv');
 
@@ -44,11 +45,11 @@ fs.mkdir(`${projectroot}/${filedir}`, (err) => {
 app.use("/uploads", express.static("uploads"));
 
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
+    destination: (req, photo, cb) => {
         cb(null, "uploads");
     },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname));
+    filename: (req, photo, cb) => {
+        cb(null, Date.now() + path.extname(photo.originalname));
     },
 });
 
@@ -106,7 +107,7 @@ app.post('/resume/create', upload.single("photo"), async (req, res) => {
 
     // group the values into an object
     const newEntry = {
-        id: generateID(),
+        id: uuidv4(),
         fullName,
         image_url: `https://resumeforge.onrender.com/uploads/${req.file.filename}`,
         currentPosition,
