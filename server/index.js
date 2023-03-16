@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const multer = require("multer");
 const helmet = require("helmet");
+const fs = require('fs');
 const path = require("path");
 const { Configuration, OpenAIApi } = require("openai");
 const dotenv = require('dotenv');
@@ -24,9 +25,23 @@ app.use(express.json());
 //   };
 app.use(cors());
 
+// Make direcory in the server root
+const filedir = "uploads";
+
+// Get the path to the current server project root directory
+const projectroot = process.cwd();
+
+// Create the new directory
+fs.mkdir(`${projectroot}/${filedir}`, (err) => {
+  if (err) {
+    console.log(err.message);
+  } else {
+    console.log(`Successfully created directory ${filedir} in ${projectroot}`);
+  }
+});
+
 // code for image upload with multa
 app.use("/uploads", express.static("uploads"));
-const uploadspath = path.join(__dirname, "uploads");
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
