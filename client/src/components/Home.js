@@ -38,13 +38,6 @@ const Home = ({ setResult }) => {
             .catch(error => {
               console.log(error.message);
             });
-
-        // axios.post('https://resumeforge.onrender.com/resume/create', formData, {
-        //     headers: {
-        //         'Content-Type': 'multipart/form-data'
-        //     },
-        // });
-
         setLoading(true);
     };
 
