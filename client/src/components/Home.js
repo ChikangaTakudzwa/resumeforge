@@ -25,27 +25,28 @@ const Home = ({ setResult }) => {
         formData.append("currentTechnologies", currentTechnologies);
         formData.append("workHistory", JSON.stringify(companyInfo));
 
-        // axios.post('https://resumeforge.onrender.com/resume/create', formData, {
-        //     headers: {
-        //         'Content-Type': 'multipart/form-data'
-        //     }
-        // });
+        axios.post('https://resumeforge.onrender.com/resume/create', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+        });
+        console.log(formData);
         setLoading(true);
-        axios
-            .post('https://resumeforge.onrender.com/resume/create', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
-            .then((res) => {
-                if (res.data.message) {
-                    // updates the result object
-                    console.log(res.data.message);
-                    setResult(res.data.data);
-                    navigate("/resume");
-                }
-            })
-            .catch((err) => console.error(err))
+        // axios
+        //     .post('https://resumeforge.onrender.com/resume/create', formData, {
+        //         headers: {
+        //             'Content-Type': 'multipart/form-data'
+        //         }
+        //     })
+        //     .then((res) => {
+        //         if (res.data.message) {
+        //             // updates the result object
+        //             console.log(res.data.message);
+        //             setResult(res.data.data);
+        //             navigate("/resume");
+        //         }
+        //     })
+        //     .catch((err) => console.error(err))
     };
 
     // updates the state with user's input

@@ -77,7 +77,7 @@ app.get('/ping', (req, res) => {
 let database = [];
 
 // post form data to the server, img uploaded using upload.single()
-app.post('/resume/create', upload.single("headshotImage"), async (req, res) => {
+app.post('/resume/create', upload.single("photo"), async (req, res) => {
     const {
         fullName,
         currentPosition,
@@ -103,7 +103,7 @@ app.post('/resume/create', upload.single("headshotImage"), async (req, res) => {
     const remainderText = () => {
         let stringText = "";
         for (let i = 0; i < workArray.length; i++) {
-            stringText += ` ${workArray[i].name} as a ${workArray[i].position}.`;
+            stringText += `${workArray[i].name} as a ${workArray[i].position}.`;
         }
         return stringText;
     };
