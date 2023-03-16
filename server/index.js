@@ -93,7 +93,7 @@ app.post('/resume/create', upload.single("photo"), async (req, res) => {
     const newEntry = {
         id: generateID(),
         fullName,
-        image_url: `${uploadspath}/${req.file.filename}`,
+        image_url: `https://resumeforge.onrender.com/${req.file.filename}`,
         currentPosition,
         currentLength,
         currentTechnologies,
